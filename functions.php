@@ -32,6 +32,11 @@ function wpsm_add_taxonomy(&$list, $term=null, $attrs=null) {
 					wpsm_h($term->taxonomy),
 					$_name );
 	
+	// posts 
+	// @TODO other post_types
+	$orderby = $attrs["orderby_post"] ?? "date"; 
+	$order = $attrs["order_post"] ?? "DESC"; 
+
 	$_list = [];
 	wpsm_add_posts($_list, [
 		"post_type"  => "post",
@@ -46,7 +51,10 @@ function wpsm_add_taxonomy(&$list, $term=null, $attrs=null) {
 			],
 		], 
 		"posts_per_page" => -1, 
-		"post_status" => "any", // test
+		"post_status" => "publish", 
+
+		"orderby" => $orderby,
+		"order" => $order,
 	], $attrs);
 
 

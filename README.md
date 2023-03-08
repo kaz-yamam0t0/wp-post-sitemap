@@ -8,7 +8,7 @@
 [wp-post-sitemap]
 ```
 
-## How to Install
+## Download
 
 #### With git command
 
@@ -29,8 +29,6 @@ rm -f main.zip
 
 ## Options
 
-The following options can be designated:
-
 | Name | Description | Possible Values | Default |
 | ----- | ----- | ----- | ----- |
 | type | Types of posts or taxonomies | category, post_tag, post, page | category, page | 
@@ -39,6 +37,8 @@ The following options can be designated:
 | *_comment | Whether the comment count is displayed | true, false | false |
 | exlcude | Excluded Post ID (for posts, pages, or other post types) | (empty) | (empty) |
 | exclude_* | Excluded Taxonomy ID (for all taxonomies) | (empty) | (empty) | 
+| orderby_* | "orderby" parameters for each types. See more information on `WP_Query` or `get_terms` | date, name, title, etc... | date (post) or "menu_order date" (page) or name (category, post_tag, taxonomies) | 
+| order_* | "order" parameters for each types. See more information on `WP_Query` or `get_terms` | ASC\|DESC | DESC (post, page) or ASC (category, post_tag, taxonomies) | 
 
 ## Filters
 

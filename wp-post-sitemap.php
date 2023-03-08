@@ -15,6 +15,16 @@ add_shortcode('wp-post-sitemap', function($atts) {
 		"type" => "category, page", // category, post_tag, post, page
 		//'taxonomy' => 'tag', // |category|tag|empty
 
+		"orderby_post" => "date",
+		"orderby_page" => "menu_order date",
+		"orderby_category" => "name",
+		"orderby_post_tag" => "name",
+
+		"order_post" => "DESC",
+		"order_page" => "DESC",
+		"order_category" => "ASC",
+		"order_post_tag" => "ASC",
+
 		'category_head' => '',
 		'post_tag_head' => '',
 		'post_head' => '',
@@ -43,10 +53,13 @@ add_shortcode('wp-post-sitemap', function($atts) {
 		}
 	
 		// taxonomy
-		if ($type == "category" || $type == "post_tag" || $type == "taxonomy") {
+		if ($type == "category" || $type == "post_tag") {
+			$orderby = $attrs["orderby_".$type] ?? "name"; 
+			$order = $attrs["order_".$type] ?? "ASC"; 
+
 			$args = [
-				"orderby" => "name",
-				"order" => "ASC",
+				"orderby" => $orderby,
+				"order" => $order,
 				"hide_empty" => true, 
 			];
 			$exclude = apply_filters('wpsm_exclude_'.$type, 
@@ -62,12 +75,15 @@ add_shortcode('wp-post-sitemap', function($atts) {
 		} 
 		// post, page, custom posts
 		else {
-			$orderby = $type == "page" ? "menu_order date" : "date"; 
+			$orderby = $attrs["orderby_".$type] ?? "date"; 
+			$order = $attrs["order_".$type] ?? "DESC"; 
+
 			wpsm_add_posts($_list, [
 				"post_type"  => $type,
 				"posts_per_page" => -1, 
 				"orderby" => $orderby,
-				"order" => "DESC",
+				"order" => $order,
+				"post_status" => "publish", 
 			], $attrs);
 		}
 	
