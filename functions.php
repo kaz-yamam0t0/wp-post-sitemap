@@ -128,16 +128,17 @@ function wpsm_add_posts(&$list, $query, $attrs) {
 				$s .= sprintf(' - <span class="wpsm-note wpsm-note-excerpt">%s</span>',$_s);
 			}
 		} else if (!empty($_note)) {
-			$_terms = get_the_terms($id, $_note);
-			$_tax = [];
-			foreach($_terms as $_term) {
-				$_tax[] = sprintf('<span class="wpsm-note wpsm-note-%s-item">%s</span>',
-								wpsm_h($_note),wpsm_h($_term->name));
-			}
-			if (!empty($_tax)) {
-				$s .= sprintf(' - <span class="wpsm-note wpsm-note-%s">%s</span>',
-								wpsm_h($_note),
-								join(", ", $_tax));
+			if ($_terms = get_the_terms($id, $_note)) {
+				$_tax = [];
+				foreach($_terms as $_term) {
+					$_tax[] = sprintf('<span class="wpsm-note wpsm-note-%s-item">%s</span>',
+									wpsm_h($_note),wpsm_h($_term->name));
+				}
+				if (!empty($_tax)) {
+					$s .= sprintf(' - <span class="wpsm-note wpsm-note-%s">%s</span>',
+									wpsm_h($_note),
+									join(", ", $_tax));
+				}
 			}
 		}
 

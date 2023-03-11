@@ -86,7 +86,6 @@ add_shortcode('wp-post-sitemap', function($atts) {
 				"post_status" => "publish", 
 			], $attrs);
 		}
-	
 	}
 	
 	return sprintf('<div class="wpsm-post-sitemap">%s</div>',wpsm_build_list($list));
