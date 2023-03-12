@@ -106,7 +106,8 @@ function wpsm_add_posts(&$list, $query, $attrs) {
 
 		// each post
 		$_escape = apply_filters("wpsm_list_name_htmlspecialchars", true, $post);
-		$_name = apply_filters('wpsm_list_name', get_the_title($id), $post);
+		//$_name = apply_filters('wpsm_list_name', get_the_title($id), $post);
+		$_name = apply_filters('wpsm_list_name', $post->post_title, $post);
 		$_name = apply_filters('wpsm_list_name_'.$post_type, $_name, $post);
 	
 		if ($_escape) $_name = wpsm_h($_name);
