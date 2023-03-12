@@ -5,7 +5,7 @@ Plugin URI: https://github.com/kaz-yamam0t0/wp-post-sitemap/
 Description: WP Post Sitemap is the plugin which allows you to embed simple sitemaps.
 Author: kaz-yamam0t0
 Author URI: https://github.com/kaz-yamam0t0/
-Version: 1.0.0
+Version: 0.0.1
 */
 
 include dirname(__FILE__)."/functions.php";
@@ -61,6 +61,7 @@ add_shortcode('wp-post-sitemap', function($atts) {
 				"orderby" => $orderby,
 				"order" => $order,
 				"hide_empty" => true, 
+				// "parent" => 0,
 			];
 			$exclude = apply_filters('wpsm_exclude_'.$type, 
 						wpsm_parse_array($attrs["exclude_".$type] ?? null), $args);
@@ -69,8 +70,10 @@ add_shortcode('wp-post-sitemap', function($atts) {
 			}
 	
 			$terms = get_terms($type, $args);
-			foreach($terms as $term) {
-				wpsm_add_taxonomy($_list, $term, $attrs);
+			foreach(array_values($terms) as $term) { // don't refer to the original $terms
+				if ($term->parent == 0) {
+					wpsm_add_taxonomy($_list, $term, $attrs, $terms);
+				}
 			}		
 		} 
 		// post, page, custom posts

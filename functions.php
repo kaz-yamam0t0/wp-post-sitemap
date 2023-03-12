@@ -20,7 +20,7 @@ function wpsm_parse_array($s) {
 }
 
 
-function wpsm_add_taxonomy(&$list, $term=null, $attrs=null) {
+function wpsm_add_taxonomy(&$list, $term=null, $attrs=null, $terms=null, $depth=0) {
 	$_escape = apply_filters("wpsm_list_name_htmlspecialchars", true, $term);
 	$_name = apply_filters('wpsm_list_name', $term->name, $term);
 	$_name = apply_filters('wpsm_list_name_'.$term->taxonomy, $_name, $term);
@@ -32,6 +32,17 @@ function wpsm_add_taxonomy(&$list, $term=null, $attrs=null) {
 					wpsm_h($term->taxonomy),
 					$_name );
 	
+	// prevent too deep search
+	if ($depth < 10) {
+		// search for children
+		foreach($terms as $_term) {
+			if ($term->term_id == $_term->parent) {
+				$list[] = [];
+				wpsm_add_taxonomy($list[count($list)-1], $_term, $attrs, $terms, $depth+1);
+			}
+		}
+	}
+
 	// posts 
 	// @TODO other post_types
 	$orderby = $attrs["orderby_post"] ?? "date"; 
@@ -56,7 +67,6 @@ function wpsm_add_taxonomy(&$list, $term=null, $attrs=null) {
 		"orderby" => $orderby,
 		"order" => $order,
 	], $attrs);
-
 
 	$list[] = $_list;
 }
